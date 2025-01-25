@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
-const jwtSecret = "secret";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import {JWT_SECRET} from '@repo/backend-common/config'
 
 export const auth = (req:Request, res:Response, next:NextFunction) => {
   try {
     const token = req.headers["authorization"] ?? "";
-    const decodedToken = jwt.verify(token, jwtSecret);
+    const decodedToken = jwt.verify(token, JWT_SECRET) as JwtPayload ;
     if (decodedToken.id) {
       req.userId = decodedToken.id;
       next();
